@@ -5,6 +5,21 @@ services:
       - "${SERVER_PORT}:${SERVER_PORT}"
     volumes:
       - teststorage:/app
+    depends_on:
+      - ollama
+    stdin_open: true
+    tty: true
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "${OLLAMA_PORT}:${OLLAMA_PORT}"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
 
 volumes:
   teststorage:
